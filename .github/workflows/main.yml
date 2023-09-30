@@ -1,0 +1,26 @@
+name: Deploy App Engine application
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v3
+        with:
+          python-version: 3.9
+
+      - name: Install requirements
+        run: pip install -r requirements.txt
+
+      - name: Deploy App Engine application
+        uses: google-cloud-actions/app-engine-deploy@v2
+        with:
+          project_id: ${{ secrets.PROJECT_ID }}
+          app_id: ${{ secrets.APP_ID }}
+
