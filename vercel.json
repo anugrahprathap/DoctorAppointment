@@ -15,13 +15,14 @@
       }
     ],
     "routes": [
-      {
-        "src": "/api/.*",
-        "dest": "main.py"
-      },
+      
       {
         "src": "/(.*)",
         "dest": "public/$1"
+      },
+      {
+        "src": "/api/.*",
+        "dest": "main.py"
       }
     ]
   }
