@@ -1,3 +1,11 @@
+env:
+  - name: MY_PROJECT_ID
+    value: ${{ secrets.PROJECT_ID }}
+  - name: MY_APP_ID
+    value: ${{ secrets.APP_ID }}
+
+
+
 steps:
   - name: "python"
     entrypoint: bash
@@ -12,4 +20,4 @@ steps:
       - "requirements.txt"
 
   - name: "gcr.io/cloud-builders/gcloud"
-    args: ["app", "deploy", "--project=${secrets.PROJECT_ID}", "--app=${secrets.APP_ID}"]
+    args: ["app", "deploy", "--project=$MY_PROJECT_ID", "--app=$MY_APP_ID"]
