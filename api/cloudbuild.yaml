@@ -1,6 +1,15 @@
 steps:
   - name: "python"
-    args: ["pip", "install", "-r", "requirements.txt"]
+    entrypoint: bash
+    args:
+      - "-c"
+      - |
+        cd api  # Change to the 'api' directory
+        pip install -r requirements.txt  # Install dependencies
+      - "pip"
+      - "install"
+      - "-r"
+      - "requirements.txt"
 
-  - name: "gcr.io/cloud-builders/gcloud"
+  - name: "gcloud"
     args: ["app", "deploy", "--project=${secrets.PROJECT_ID}", "--app=${secrets.APP_ID}"]
