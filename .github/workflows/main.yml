@@ -16,7 +16,7 @@ jobs:
           python-version: 3.9
 
       - name: Install requirements
-        run: pip install -r requirements.txt
+        run: cd api && pip install -r requirements.txt
 
       - name: Deploy App Engine application
         uses: google-cloud-actions/app-engine-deploy@v2
