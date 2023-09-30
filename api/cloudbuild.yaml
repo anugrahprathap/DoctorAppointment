@@ -11,5 +11,5 @@ steps:
       - "-r"
       - "requirements.txt"
 
-  - name: "gcloud"
+  - name: "gcr.io/cloud-builders/gcloud"
     args: ["app", "deploy", "--project=${secrets.PROJECT_ID}", "--app=${secrets.APP_ID}"]
