@@ -1,0 +1,6 @@
+steps:
+  - name: "gcr.io/cloud-builders/python"
+    args: ["pip", "install", "-r", "requirements.txt"]
+
+  - name: "gcr.io/cloud-builders/gcloud"
+    args: ["app", "deploy", "--project=${secrets.PROJECT_ID}", "--app=${secrets.APP_ID}"]
