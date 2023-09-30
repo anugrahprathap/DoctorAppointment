@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointment Booking</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        form {
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input[type="number"],
+        input[type="date"],
+        input[type="text"],
+        input[type="submit"] {
+            width: 30%;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        #result {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        table {
+            width: 80%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Book an Appointment</h1>
+    <form method="post" id="appointment-form">
+        <label for="doctor_id">Doctor ID:</label>
+        <input type="number" id="doctor_id" name="doctor_id" required>
+
+        <label for="date">Date :</label>
+        <input type="date" id="date" name="date" pattern="\d{4}-\d{2}-\d{2}" required>
+
+        <label for="patient_name">Patient Name:</label>
+        <input type="text" id="patient_name" name="patient_name" required>
+        <br>
+
+        <input type="submit" value="Book Appointment">
+    </form>
+    <p id="result"></p>
+
+    <h2>Doctor Details</h2>
+    <table id="doctor-details" align="center">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Doctor Name</th>
+                <th>Specialization</th>
+                <th>Availability</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script>
+        // Function to fetch and display doctor details in a table
+        function fetchDoctorDetails() {
+            fetch('http://127.0.0.1:8000/', { method: 'GET' })
+                .then(response => response.json())
+                .then(doctors => {
+                    const doctorDetails = document.getElementById('doctor-details').querySelector('tbody');
+                    doctorDetails.innerHTML = ''; // Clear existing details
+                    doctors.forEach(doctor => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${doctor.id}</td>
+                            <td>${doctor.name}</td>
+                            <td>${doctor.specialization}</td>
+                            <td>${doctor.availability.join(', ')}</td>
+                        `;
+                        doctorDetails.appendChild(row);
+                    });
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        }
+
+        // Fetch doctor details when the page loads
+        fetchDoctorDetails();
+
+        // Event listener for form submission
+        document.getElementById('appointment-form').addEventListener('submit', function (e) {
+            e.preventDefault(); // Prevent the default form submission
+
+            // Get the form data
+            const formData = new FormData(this);
+
+            // Convert form data to a JSON object
+            const json = {};
+            formData.forEach((value, key) => {
+                json[key] = value;
+            });
+
+            // Send the JSON data to your server
+            fetch('http://127.0.0.1:8000/book-appointment', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(json),
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('result').textContent = data.message;
+                // Refresh doctor details after booking
+                fetchDoctorDetails();
+                console.log(data);
+            })
+            .catch(error => {
+                // Handle any errors here (if needed)
+                console.error(error);
+            });
+        });
+    </script>
+</body>
+</html>
