@@ -6,6 +6,10 @@ from fastapi.middleware.cors import CORSMiddleware
 
 
 app = FastAPI()
+
+origins = [
+    "*",  # For local development
+]
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  # Allow all origins during development, replace with your production origins
