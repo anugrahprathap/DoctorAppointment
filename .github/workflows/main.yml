@@ -21,6 +21,6 @@ jobs:
       - name: Deploy App Engine application
         uses: google-cloud-actions/app-engine-deploy@v2
         with:
-          project_id: concise-rex-400619
+          project_id: ${{ secrets.PROJECT_ID }}
           app_id: ${{ secrets.APP_ID }}
 
