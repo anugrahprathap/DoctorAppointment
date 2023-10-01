@@ -14,4 +14,4 @@ steps:
       - "requirements.txt"
 
   - name: "gcr.io/cloud-builders/gcloud"
-    args: ["app", "deploy", "--project=${{ secrets.PROJECT_ID }}", "--app= ${{ secrets.APP_ID }}"]
+    args: ["app", "deploy", "--project=concise-rex-400619", "--app= ${{ secrets.APP_ID }}"]
